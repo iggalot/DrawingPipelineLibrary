@@ -1,7 +1,11 @@
 ﻿using DrawingPipeline;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using static DrawingPipeline.BaseDrawingPipeline;
 using static MathLibrary.MathVectors;
 
@@ -31,9 +35,77 @@ namespace MathLibraryDriver
 
             OnUserCreate();
 
+
+            // create a thread for UI
+            Thread UIThread = new Thread(new ThreadStart(UIThreadFunction));
+            UIThread.Start();
+
+
             // Perform our rendering.
             OnUserUpdate();
+
+            UIThread.Join();
+
+
         }
+
+        private void UIThreadFunction()
+        {
+            var directInput = new DirectInput();
+            var keyboard = new Keyboard(directInput);
+
+
+            keyboard.Properties.BufferSize = 128;
+            keyboard.Acquire();
+
+
+            bool validKeyPressed = false;
+            while (true)
+            {
+                keyboard.Poll();
+                var datas = keyboard.GetBufferedData();
+                foreach (var state in datas)
+                {
+                    if (state.IsPressed == false)
+                        continue;
+
+                    if (state.Key == Key.D)
+                    {
+                        //Console.WriteLine(state.Key + " was pressed here!");
+                        TriangleList[0].p[0].X += -10.0f;
+                        validKeyPressed = true;
+                    }
+                    if(state.Key == Key.A)
+                    {
+                        //Console.WriteLine(state.Key + " was pressed here!");
+                        TriangleList[0].p[0].X += 10.0f;
+                        validKeyPressed = true;
+                    }
+                    if (state.Key == Key.W)
+                    {
+                        //Console.WriteLine(state.Key + " was pressed here!");
+                        TriangleList[0].p[0].Y += -10.0f;
+                        validKeyPressed = true;
+                    }
+                    if (state.Key == Key.S)
+                    {
+                        //Console.WriteLine(state.Key + " was pressed here!");
+                        TriangleList[0].p[0].Y += +10.0f;
+                        validKeyPressed = true;
+                    }
+
+                    if (validKeyPressed)
+                    {
+                        Dispatcher.BeginInvoke((Action)(() => OnUserUpdate()));
+                        validKeyPressed = false;
+                    }
+
+                    // Show the key press state information
+                    Console.WriteLine(state);
+                }
+            }
+        }
+
 
         private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
