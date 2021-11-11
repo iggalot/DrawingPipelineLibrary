@@ -13,9 +13,9 @@ namespace DrawingPipeline
     {
         private static float[] m_DepthBuffer;
 
-        private Mat4x4 matProj;
-        private Mat4x4 matView;
-        private Mat4x4 matWorld;
+        private Mat4x4 matProj = new Mat4x4();
+        private Mat4x4 matView = new Mat4x4();
+        private Mat4x4 matWorld = new Mat4x4();
 
         private float fViewX;
         private float fViewY;
@@ -174,7 +174,12 @@ namespace DrawingPipeline
             Console.WriteLine(itemsDrawn.ToString() + " items drawn.");
             return itemsDrawn = 0;
         }
-
+        public BaseDrawingPipeline()
+        {
+            matProj = MathOps.Mat_MakeIdentity();
+            matWorld = MathOps.Mat_MakeIdentity();
+            matView = MathOps.Mat_MakeIdentity();
+        }
         public int RenderLine(List<LineObject> lines, RENDERFLAGS flags = RENDERFLAGS.RENDER_DEPTH)
         {
             return RenderLine(lines, flags, 0, lines.Count);

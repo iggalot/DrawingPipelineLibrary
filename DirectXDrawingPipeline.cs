@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static MathLibrary.MathVectors;
 using D3D11 = SharpDX.Direct3D11;
 
@@ -18,6 +19,8 @@ namespace DrawingPipeline
         private SharpDX.Mathematics.Interop.RawViewportF viewport;
         private D3D11.VertexShader vertexShader;
         private D3D11.PixelShader pixelShader;
+
+        public ConstantBuffer<BasicEffectVertexConstants> _vertexConstantBuffer;
 
         private D3D11.InputElement[] inputElements = new D3D11.InputElement[]
         {
@@ -33,6 +36,68 @@ namespace DrawingPipeline
             new VertexPositionColor(new Vector3(0.5f, 0.5f, 0.0f), SharpDX.Color.Blue),
             new VertexPositionColor(new Vector3(0.0f, -0.5f, 0.0f), SharpDX.Color.Green)
         };
+
+        [StructLayout(LayoutKind.Explicit, Size = 128)]
+        public struct BasicEffectVertexConstants
+        {
+            [FieldOffset(0)]
+            public Mat4x4 WorldViewProjection;
+
+            [FieldOffset(64)]
+            public Mat4x4 World;
+        }
+
+
+        public class ConstantBuffer<T> : IDisposable where T : struct
+        {
+            private readonly D3D11.Device _device;
+            private readonly D3D11.Buffer _buffer;
+            private readonly DataStream _dataStream;
+
+            public D3D11.Buffer Buffer
+            {
+                get { return _buffer; }
+            }
+
+            public ConstantBuffer(D3D11.Device device)
+            {
+                _device = device;
+
+                // If no specific marshalling is needed, can use
+                // SharpDX.Utilities.SizeOf<T>() for better performance.
+                int size = Marshal.SizeOf(typeof(T));
+
+                _buffer = new D3D11.Buffer(device, new BufferDescription
+                {
+                    Usage = ResourceUsage.Default,
+                    BindFlags = BindFlags.ConstantBuffer,
+                    SizeInBytes = size,
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    OptionFlags = ResourceOptionFlags.None,
+                    StructureByteStride = 0
+                });
+
+                _dataStream = new DataStream(size, true, true);
+            }
+
+            public void UpdateValue(T value)
+            {
+                // If no specific marshalling is needed, can use 
+                // dataStream.Write(value) for better performance.
+                Marshal.StructureToPtr(value, _dataStream.DataPointer, false);
+
+                var dataBox = new SharpDX.DataBox(_dataStream.DataPointer);
+                _device.ImmediateContext.UpdateSubresource(dataBox, _buffer, 0);
+            }
+
+            public void Dispose()
+            {
+                if (_dataStream != null)
+                    _dataStream.Dispose();
+                if (_buffer != null)
+                    _buffer.Dispose();
+            }
+        }
 
 
 
@@ -150,6 +215,23 @@ namespace DrawingPipeline
             viewport = new SharpDX.Viewport(0, 0, (int) Width, (int) Height);
 
             d3dDeviceContext.Rasterizer.SetViewport(viewport);
+
+            // create our constant buffer
+            _vertexConstantBuffer = new ConstantBuffer<BasicEffectVertexConstants>(d3dDevice);
+
+            var vertexConstants = new BasicEffectVertexConstants();
+
+            // TODO verify the order here.
+            Mat4x4 wvp = MathOps.Mat_MultiplyMatrix(GetMatWorld, GetMatView);
+            wvp = MathOps.Mat_MultiplyMatrix(wvp, GetMatProj);
+            wvp = MathOps.Mat_Transpose(wvp);
+
+            vertexConstants.WorldViewProjection = wvp;
+            vertexConstants.World = MathOps.Mat_Transpose(GetMatWorld);
+
+            _vertexConstantBuffer.UpdateValue(vertexConstants);
+            d3dDeviceContext.VertexShader.SetConstantBuffer(0, _vertexConstantBuffer.Buffer);
+
         }
 
         private void InitializeTriangles(List<TriangleObject> triList)
