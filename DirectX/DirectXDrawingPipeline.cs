@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using static MathLibrary.MathVectors;
 using D3D11 = SharpDX.Direct3D11;
 
-namespace DrawingPipeline
+namespace DrawingPipeline.DirectX
 {
     public class DirectXDrawingPipeline : BaseDrawingPipeline
     {

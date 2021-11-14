@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLibrary", "..\MathLibra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLibraryDriver", "MathLibraryDriver\MathLibraryDriver.csproj", "{038F591A-2694-4231-A793-A368282DDF8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSharpDXRastertek", "..\SharpDX-Rastertek-Tutorials\DSharpDXRastertek\DSharpDXRastertek.csproj", "{BD79AF39-95FD-4BAC-9C99-B42E98890ABF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{038F591A-2694-4231-A793-A368282DDF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{038F591A-2694-4231-A793-A368282DDF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{038F591A-2694-4231-A793-A368282DDF8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD79AF39-95FD-4BAC-9C99-B42E98890ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD79AF39-95FD-4BAC-9C99-B42E98890ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD79AF39-95FD-4BAC-9C99-B42E98890ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD79AF39-95FD-4BAC-9C99-B42E98890ABF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
