@@ -11,7 +11,6 @@ namespace DrawingPipelineLibrary.DirectX
         public DSystemConfiguration Configuration { get; private set; }
         public DInput Input { get; private set; }
         public DGraphics Graphics { get; private set; }
-        public DTimer Timer { get; private set; }
 
         // Constructor
         public DSystem() { }
@@ -46,14 +45,6 @@ namespace DrawingPipelineLibrary.DirectX
             }
 
             DPerfLogger.Initialize("RenderForm C# SharpDX: " + Configuration.Width + "x" + Configuration.Height + " VSync:" + DSystemConfiguration.VerticalSyncEnabled + " FullScreen:" + DSystemConfiguration.FullScreen + "   " + RenderForm.Text, testTimeSeconds, Configuration.Width, Configuration.Height);
-
-            // Create and initialize Timer.
-            Timer = new DTimer();
-            if (!Timer.Initialize())
-            {
-                MessageBox.Show("Could not initialize Timer object", "Error", MessageBoxButtons.OK);
-                return false;
-            }
 
             return result;
         }
@@ -91,9 +82,14 @@ namespace DrawingPipelineLibrary.DirectX
                 return false;
 
             // Update the system stats but only run this tutorials test for one second since we cannot get frame rates because it is too fast..
-            Timer.Frame2();
-            if (Timer.CumulativeFrameTime >= (1 * 1000))
-                return false;
+            Graphics.Timer.Frame2();
+
+            if (DPerfLogger.IsTimedTest)
+            {
+                DPerfLogger.Frame(Graphics.Timer.FrameTime);
+                if (Graphics.Timer.CumulativeFrameTime >= DPerfLogger.TestTimeInSeconds * 1000)
+                    return false;
+            }
 
             // Do the frame processing for the graphics object.
             return Graphics.Frame();
@@ -102,8 +98,7 @@ namespace DrawingPipelineLibrary.DirectX
         {
             ShutdownWindows();
 
-            // Release the Timer object
-            Timer = null;
+            DPerfLogger.ShutDown();
 
             // Release graphics and related objects.
             Graphics?.ShutDown();

@@ -27,10 +27,11 @@ namespace DrawingPipelineLibrary.DirectX
             if (Stopwatch.Frequency == 0)
                 return false;
 
-            _StopWatch = Stopwatch.StartNew();
-
             // Find out how many times the frequency counter ticks every millisecond.
             m_ticksPerMs = (Stopwatch.Frequency / 1000.0f);
+
+            _StopWatch = Stopwatch.StartNew();
+            
             return true;
         }
         public void Frame2()

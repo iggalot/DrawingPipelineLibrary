@@ -68,9 +68,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDrawingPipeline.cs" />
+    <Compile Include="DirectX\DCamera.cs" />
+    <Compile Include="DirectX\DColorShader.cs" />
     <Compile Include="DirectX\DDX11.cs" />
     <Compile Include="DirectX\DGraphics.cs" />
     <Compile Include="DirectX\DInput.cs" />
+    <Compile Include="DirectX\DModel.cs" />
     <Compile Include="DirectX\DPerfLogger.cs" />
     <Compile Include="DirectX\DSystem.cs" />
     <Compile Include="DirectX\DSystemConfiguration.cs" />
@@ -82,6 +85,10 @@
     <Compile Include="VertexPositionColor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DirectX\Shaders\Color.ps">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DirectX\Shaders\Color.vs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

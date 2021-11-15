@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using DrawingPipelineLibrary.DirectX;
+using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -114,6 +115,13 @@ namespace DrawingPipeline.DirectX
 
         public DirectXDrawingPipeline()
         {
+            // Start of the new system...
+            DSystem system = new DSystem();
+            DSystem.StartRenderForm("new string",1200,900, true, false);
+
+
+
+            // Old Pipeline system stuff
             renderForm = new RenderForm("My first SharpDX game");
             renderForm.ClientSize = new Size((int)Width, (int)Height);
             renderForm.AllowUserResizing = false;

@@ -24,6 +24,8 @@ namespace DrawingPipelineLibrary.DirectX
         public DepthStencilState DepthStencilState { get; set; }
         private DepthStencilView DepthStencilView { get; set; }
         private RasterizerState RasterState { get; set; }
+        public Matrix ProjectionMatrix { get; private set; }
+        public Matrix WorldMatrix { get; private set; }
 
         // Constructor
         public DDX11() { }
@@ -120,7 +122,7 @@ namespace DrawingPipelineLibrary.DirectX
                 backBuffer.Dispose();
 
                 // Initialize and set up the description of the depth buffer.
-                var depthBufferDesc = new Texture2DDescription()
+                Texture2DDescription depthBufferDesc = new Texture2DDescription()
                 {
                     Width = configuration.Width,
                     Height = configuration.Height,
@@ -138,7 +140,7 @@ namespace DrawingPipelineLibrary.DirectX
                 DepthStencilBuffer = new Texture2D(device, depthBufferDesc);
 
                 // Initialize and set up the description of the stencil state.
-                var depthStencilDesc = new DepthStencilStateDescription()
+                DepthStencilStateDescription depthStencilDesc = new DepthStencilStateDescription()
                 {
                     IsDepthEnabled = true,
                     DepthWriteMask = DepthWriteMask.All,
@@ -188,7 +190,7 @@ namespace DrawingPipelineLibrary.DirectX
                 DeviceContext.OutputMerger.SetTargets(DepthStencilView, RenderTargetView);
 
                 // Setup the raster description which will determine how and what polygon will be drawn.
-                var rasterDesc = new RasterizerStateDescription()
+                RasterizerStateDescription rasterDesc = new RasterizerStateDescription()
                 {
                     IsAntialiasedLineEnabled = false,
                     CullMode = CullMode.Back,
@@ -210,6 +212,13 @@ namespace DrawingPipelineLibrary.DirectX
 
                 // Setup and create the viewport for rendering.
                 DeviceContext.Rasterizer.SetViewport(0, 0, configuration.Width, configuration.Height, 0, 1);
+
+                // Setup and create the projection matrix.
+                ProjectionMatrix = Matrix.PerspectiveFovLH((float)(Math.PI / 4), ((float)configuration.Width / (float)configuration.Height), DSystemConfiguration.ScreenNear, DSystemConfiguration.ScreenDepth);
+
+                // Initialize the world matrix to the identity matrix.
+                WorldMatrix = Matrix.Identity;
+
                 return true;
             }
             catch
@@ -241,19 +250,23 @@ namespace DrawingPipelineLibrary.DirectX
         }
         public void BeginScene(float red, float green, float blue, float alpha)
         {
+            BeginScene(new Color4(red, green, blue, alpha));
+        }
+        public void BeginScene(Color4 givenColour)
+        {
             // Clear the depth buffer.
             DeviceContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
 
             // Clear the back buffer.   Color.Transparent.ToColor4()
-            DeviceContext.ClearRenderTargetView(RenderTargetView, new Color4(red, green, blue, alpha));
+            DeviceContext.ClearRenderTargetView(RenderTargetView, givenColour);
         }
         public void EndScene()
         {
             // Present the back buffer to the screen since rendering is complete.
             if (VerticalSyncEnabled)
-                SwapChain.Present(1, 0); // Lock to screen refresh rate.
+                SwapChain.Present(1, PresentFlags.None); // Lock to screen refresh rate.
             else
-                SwapChain.Present(0, 0); // Present as fast as possible.
+                SwapChain.Present(0, PresentFlags.None); // Present as fast as possible.
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System.Windows.Forms;
 
 namespace DrawingPipelineLibrary.DirectX
 {
@@ -9,9 +10,12 @@ namespace DrawingPipelineLibrary.DirectX
         public int Height { get; set; }
 
         // Static Properties
-        public static FormBorderStyle BorderStyle { get; set; }
         public static bool FullScreen { get; private set; }
         public static bool VerticalSyncEnabled { get; private set; }
+        public static float ScreenDepth { get; private set; }
+        public static float ScreenNear { get; private set; }
+        public static FormBorderStyle BorderStyle { get; set; }
+        public static string ShaderFilePath { get; private set; }
 
         // Constructors
         public DSystemConfiguration(bool fullScreen, bool vSync) : this("SharpDX Demo", fullScreen, vSync) { }
@@ -38,7 +42,13 @@ namespace DrawingPipelineLibrary.DirectX
         static DSystemConfiguration()
         {
             VerticalSyncEnabled = false;
+            ScreenDepth = 1000.0f;
+            ScreenNear = 0.1f;
             BorderStyle = FormBorderStyle.None;
+
+            // TODO: Find a better way to locate shader files in the directory structure.
+            // For the MathLibraryDriverProject, it needs another "..\..\.." instead of two "..\..Watch this path...
+            ShaderFilePath = @"../../../DirectX/Shaders/";
         }
     }
 }
