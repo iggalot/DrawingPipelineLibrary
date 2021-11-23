@@ -49,6 +49,10 @@ namespace DrawingPipelineLibrary.DirectX
             // TODO: Find a better way to locate shader files in the directory structure.
             // For the MathLibraryDriverProject, it needs another "..\..\.." instead of two "..\..Watch this path...
             ShaderFilePath = @"../../../DirectX/Shaders/";
+
+            // For the WindProvisionsDriverProject
+            ShaderFilePath = @"./DirectX/Shaders/";
+
         }
     }
 }

@@ -117,7 +117,7 @@ namespace DrawingPipeline.DirectX
         {
             // Start of the new system...
             DSystem system = new DSystem();
-            DSystem.StartRenderForm("new string",1200,900, true, false);
+            DSystem.StartRenderForm("DirectX Window",1200,900, true, false);
 
 
 

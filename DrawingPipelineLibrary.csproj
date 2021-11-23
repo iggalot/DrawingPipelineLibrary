@@ -88,7 +88,9 @@
     <None Include="DirectX\Shaders\Color.ps">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="DirectX\Shaders\Color.vs" />
+    <None Include="DirectX\Shaders\Color.vs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
