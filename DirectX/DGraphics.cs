@@ -6,9 +6,9 @@ namespace DrawingPipelineLibrary.DirectX
     public class DGraphics                      // 23 lines              // 23 lines
     {
         // Properties
-        private DDX11 D3D { get; set; }
+        public DDX11 D3D { get; set; }
         private DCamera Camera { get; set; }
-        private DModel Model { get; set; }
+        public DModel Model { get; set; }
         private DColorShader ColorShader { get; set; }
         public DTimer Timer { get; set; }
 

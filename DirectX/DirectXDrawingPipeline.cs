@@ -108,11 +108,25 @@ namespace DrawingPipeline.DirectX
         private D3D11.RenderTargetView renderTargetView;
         private RenderForm renderForm;
 
+        public DSystem GetDSystem { get; set; }
+
         public DirectXDrawingPipeline()
         {
             // Start of the new system...
-            DSystem system = new DSystem();
-            DSystem.StartRenderForm("DirectX Window",1200,900, true, false);
+            // Initializes 
+            GetDSystem = new DSystem();
+            GetDSystem.Initialize("DirectX Window", 1200, 900, true, false, 0);
+            //GetDSystem.StartRenderForm("DirectX Window",1200,900, true, false);
+
+            // Create our model
+            LoadModel();
+            GetDSystem.Graphics.Model = new DModel();
+
+            // Initialize the vertex buffers
+            GetDSystem.Graphics.Model.Initialize(GetDSystem.Graphics.D3D.Device);
+
+            // Run the render loop...
+            GetDSystem.RunRenderForm();
 
             //// Old Pipeline system stuff
             //renderForm = new RenderForm("My first SharpDX game");
@@ -123,6 +137,11 @@ namespace DrawingPipeline.DirectX
             //InitializeShaders();
 
             //InitializeTriangles();
+        }
+
+        private void LoadModel()
+        {
+            //throw new NotImplementedException();
         }
 
         public override int Render(List<TriangleObject> TriangleList, List<LineObject> LineList, RENDERFLAGS flags)

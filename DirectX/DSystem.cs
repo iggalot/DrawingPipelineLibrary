@@ -15,7 +15,11 @@ namespace DrawingPipelineLibrary.DirectX
         // Constructor
         public DSystem() { }
 
-        public static void StartRenderForm(string title, int width, int height, bool vSync, bool fullScreen = true, int testTimeSeconds = 0)
+        /// <summary>
+        /// Default renderform loop start point.
+        /// DO NOT ERASE!!
+        /// </summary>
+        public void StartRenderForm(string title, int width, int height, bool vSync, bool fullScreen = true, int testTimeSeconds = 0)
         {
             DSystem system = new DSystem();
             system.Initialize(title, width, height, vSync, fullScreen, testTimeSeconds);
@@ -64,7 +68,7 @@ namespace DrawingPipelineLibrary.DirectX
             RenderForm.Show();
             RenderForm.Location = new Point((width / 2) - (Configuration.Width / 2), (height / 2) - (Configuration.Height / 2));
         }
-        private void RunRenderForm()
+        public void RunRenderForm()
         {
             RenderForm.KeyDown += (s, e) => Input.KeyDown(e.KeyCode);
             RenderForm.KeyUp += (s, e) => Input.KeyUp(e.KeyCode);
