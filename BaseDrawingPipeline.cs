@@ -24,6 +24,7 @@ namespace DrawingPipeline
 
         private sLight[] lights = new sLight[4];
 
+        public virtual void RunPipeline() { }
 
         public float NearPlane { get; set; } = 0.1f;
         public float FarPlane { get; set; } = 100.0f;

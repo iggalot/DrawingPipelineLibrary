@@ -32,7 +32,7 @@ namespace DrawingPipelineLibrary.DirectX
             RenderBuffers(deviceContext);
         }
 
-        private bool InitializeBuffer(Device device)
+        public bool InitializeBuffer(Device device)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace DrawingPipelineLibrary.DirectX
             }
         }
 
-        private bool InitializeBufferTestTriangle(Device device)
+        public bool InitializeBufferTestTriangle(Device device)
         {
             try
             {
