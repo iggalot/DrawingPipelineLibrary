@@ -100,18 +100,13 @@ namespace DrawingPipeline.DirectX
             }
         }
 
-
-
         private D3D11.Buffer triangleVertexBuffer;
-
         private D3D11.Device d3dDevice;
         private D3D11.DeviceContext d3dDeviceContext;
         private SwapChain swapChain;
 
         private D3D11.RenderTargetView renderTargetView;
-
         private RenderForm renderForm;
-
 
         public DirectXDrawingPipeline()
         {
@@ -119,15 +114,13 @@ namespace DrawingPipeline.DirectX
             DSystem system = new DSystem();
             DSystem.StartRenderForm("DirectX Window",1200,900, true, false);
 
+            //// Old Pipeline system stuff
+            //renderForm = new RenderForm("My first SharpDX game");
+            //renderForm.ClientSize = new Size((int)Width, (int)Height);
+            //renderForm.AllowUserResizing = false;
 
-
-            // Old Pipeline system stuff
-            renderForm = new RenderForm("My first SharpDX game");
-            renderForm.ClientSize = new Size((int)Width, (int)Height);
-            renderForm.AllowUserResizing = false;
-
-            InitializeDeviceResources();
-            InitializeShaders();
+            //InitializeDeviceResources();
+            //InitializeShaders();
 
             //InitializeTriangles();
         }
@@ -344,7 +337,6 @@ namespace DrawingPipeline.DirectX
             if (list.Count <= 0)
                 return new VertexPositionColor[0];
 
-
             // Three vertices per list item
             newList = new VertexPositionColor[list.Count * 3];
 
@@ -356,7 +348,7 @@ namespace DrawingPipeline.DirectX
                 {
 
                     //TODO:  Fix the arbitrary scaling by using the homogenous coordinates instead of the triangle list coordinates.
-                                        newList[count] = new VertexPositionColor(new Vector3(item.p[j].X / 300, item.p[j].Y / 300, 0.0f),
+                                        newList[count] = new VertexPositionColor(new Vector3(item.p[j].X / 400, item.p[j].Y / 300, 0.0f),
                                             new Color4(item.col[j].r/255.0f, item.col[j].g / 255.0f, item.col[j].b / 255.0f, item.col[j].a / 255.0f));
                     count++;
                 }
