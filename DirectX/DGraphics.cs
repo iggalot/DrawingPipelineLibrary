@@ -7,9 +7,9 @@ namespace DrawingPipelineLibrary.DirectX
     {
         // Properties
         public DDX11 D3D { get; set; }
-        private DCamera Camera { get; set; }
+        public DCamera Camera { get; set; }
         public DModel Model { get; set; }
-        private DColorShader ColorShader { get; set; }
+        public DColorShader ColorShader { get; set; }
         public DTimer Timer { get; set; }
 
         // Constructor
@@ -26,11 +26,8 @@ namespace DrawingPipelineLibrary.DirectX
                 if (!D3D.Initialize(configuration, windowHandle))
                     return false;
 
-                // Create the camera object
-                Camera = new DCamera();
-
-                // Set the initial position of the camera.
-                Camera.SetPosition(0, 0, -10);
+                // Create the camera object and set its initial position
+                Camera = new DCamera(0, 0, -10);
 
                 // Create the model object.
                 Model = new DModel();

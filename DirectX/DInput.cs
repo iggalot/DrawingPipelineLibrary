@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace DrawingPipelineLibrary.DirectX
 {
@@ -26,6 +27,19 @@ namespace DrawingPipelineLibrary.DirectX
         internal void KeyUp(Keys key)
         {
             InputKeys[key] = false;
+        }
+
+        /// <summary>
+        /// Converts from a WindowsForms key argument to an Windows.Input keys argument
+        /// </summary>
+        /// <param name="key">Windows Forms / WPF key stroke that was received</param>
+        /// <param name="v">boolean for the toggle</param>
+        public void SetKeyState(Key key, bool v)
+        {
+            if (v == true)
+                KeyDown((Keys)KeyInterop.VirtualKeyFromKey(key));
+            else
+                KeyUp((Keys)KeyInterop.VirtualKeyFromKey(key));
         }
     }
 }

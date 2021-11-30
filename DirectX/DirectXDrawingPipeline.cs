@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 using static MathLibrary.MathVectors;
 using D3D11 = SharpDX.Direct3D11;
 
@@ -17,11 +18,25 @@ namespace DrawingPipeline.DirectX
 {
     public class DirectXDrawingPipeline : BaseDrawingPipeline
     {
+        public float WindowWidth { get; set; } = 300.0f;
+        public float WindowHeight { get; set; } = 300.0f;
+
         private SharpDX.Mathematics.Interop.RawViewportF viewport;
         private D3D11.VertexShader vertexShader;
         private D3D11.PixelShader pixelShader;
 
+        // The DirectX System parameter
         public DSystem GetDSystem { get; set; }
+        public override void SetKeyState(Key key, bool val)
+        {
+            // convert the Application's WPF keystrokes to DirectX key input
+            GetDSystem.Input.SetKeyState(key, val);
+
+            // handle any generic pipeline keystroke requirements.
+            base.SetKeyState(key, val);
+        }
+
+
 
         public ConstantBuffer<BasicEffectVertexConstants> _vertexConstantBuffer;
 

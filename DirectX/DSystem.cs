@@ -1,4 +1,5 @@
 ﻿using SharpDX.Windows;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -62,11 +63,13 @@ namespace DrawingPipelineLibrary.DirectX
             {
                 ClientSize = new Size(Configuration.Width, Configuration.Height),
                 FormBorderStyle = DSystemConfiguration.BorderStyle
+
             };
 
             // The form must be showing in order for the handle to be used in Input and Graphics objects.
             RenderForm.Show();
-            RenderForm.Location = new Point((width / 2) - (Configuration.Width / 2), (height / 2) - (Configuration.Height / 2));
+            RenderForm.Location = new Point(800, 0);
+//            RenderForm.Location = new Point((width / 2) - (Configuration.Width / 2), (height / 2) - (Configuration.Height / 2));
         }
         public void RunRenderForm()
         {
@@ -85,6 +88,9 @@ namespace DrawingPipelineLibrary.DirectX
             if (Input.IsKeyDown(Keys.Escape))
                 return false;
 
+            //
+            ProcessKeyStrokes();
+
             // Update the system stats but only run this tutorials test for one second since we cannot get frame rates because it is too fast..
             Graphics.Timer.Frame2();
 
@@ -98,6 +104,53 @@ namespace DrawingPipelineLibrary.DirectX
             // Do the frame processing for the graphics object.
             return Graphics.Frame();
         }
+
+        private void ProcessKeyStrokes()
+        {
+            float offset = 0.5f;
+            DCamera c = Graphics.Camera;
+
+            float newX = c.GetX;
+            float newY = c.GetY;
+            float newZ = c.GetZ;
+
+            if (Input.IsKeyDown(Keys.A))
+            {
+                //MessageBox.Show("A pressed");
+                Input.KeyUp(Keys.A); // turn off the toggle
+                newX -= offset;
+            }
+            if (Input.IsKeyDown(Keys.D))
+            {
+                //MessageBox.Show("D pressed");
+                Input.KeyUp(Keys.D); // turn off the toggle
+                newX += offset;
+            }
+            if (Input.IsKeyDown(Keys.W))
+            {
+                Input.KeyUp(Keys.W); // turn off the toggle
+                newZ -= offset;
+                //MessageBox.Show("W pressed");
+            }
+            if (Input.IsKeyDown(Keys.X))
+            {
+                Input.KeyUp(Keys.X); // turn off the toggle
+                //MessageBox.Show("X pressed");
+                newZ += offset;
+            }
+            if (Input.IsKeyDown(Keys.R))
+            {
+                Input.KeyUp(Keys.R); // turn off the toggle
+                newX = c.GetX;
+                newY = c.GetY;
+                newZ = c.GetZ;
+            }
+
+
+            // Set the camera changes
+            Graphics.Camera.SetPosition(newX, newY, newZ);
+        }
+
         public void ShutDown()
         {
             ShutdownWindows();

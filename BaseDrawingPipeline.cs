@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using static MathLibrary.MathVectors;
+using System.Windows.Input;
 
 namespace DrawingPipeline
 {
@@ -105,7 +106,7 @@ namespace DrawingPipeline
 
         public virtual void Dispose() { }
 
-
+        public virtual void SetKeyState(Key key, bool val) { }
 
         public virtual LineObject RasterSingleLine(LineObject lineRaster, RENDERFLAGS flags)
         {
