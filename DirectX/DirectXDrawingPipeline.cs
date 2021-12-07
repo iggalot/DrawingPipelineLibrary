@@ -139,7 +139,7 @@ namespace DrawingPipeline.DirectX
             GetDSystem.Graphics.Model = new DModel();
 
             // Initialize the vertex buffers
-            GetDSystem.Graphics.Model.Initialize(GetDSystem.Graphics.D3D.Device);
+         //   GetDSystem.Graphics.Model.Initialize(GetDSystem.Graphics.D3D.Device);
 
             //// Old Pipeline system stuff
             //renderForm = new RenderForm("My first SharpDX game");

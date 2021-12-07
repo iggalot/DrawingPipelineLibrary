@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace DrawingPipelineLibrary.DirectX
@@ -9,6 +10,16 @@ namespace DrawingPipelineLibrary.DirectX
         public DDX11 D3D { get; set; }
         public DCamera Camera { get; set; }
         public DModel Model { get; set; }
+
+        public List<DModel> ModelList {get; set;}
+        public void AddModel(DModel model)
+        {
+            if (model != null)
+                ModelList.Add(model);
+
+            return;
+        }
+
         public DColorShader ColorShader { get; set; }
         public DTimer Timer { get; set; }
 
@@ -29,12 +40,14 @@ namespace DrawingPipelineLibrary.DirectX
                 // Create the camera object and set its initial position
                 Camera = new DCamera(0, 0, -10);
 
-                // Create the model object.
-                Model = new DModel();
+                // Create the list of models
+                ModelList = new List<DModel>();
+                //// Create the model object.
+                //Model = new DModel();
 
-                // Initialize the model object.
-                if (!Model.Initialize(D3D.Device))
-                    return false;
+                //// Initialize the model object.
+                //if (!Model.Initialize(D3D.Device))
+                //    return false;
 
                 // Create the color shader object.
                 ColorShader = new DColorShader();
@@ -70,9 +83,17 @@ namespace DrawingPipelineLibrary.DirectX
             ColorShader?.ShutDown();
             ColorShader = null;
 
-            // Release the model object.
-            Model?.ShutDown();
-            Model = null;
+            for (int i = 0; i < ModelList.Count; i++)
+            {
+                // Release the model object.
+                ModelList[i]?.ShutDown();
+                ModelList[i] = null;
+            }
+            ModelList.Clear();
+
+            //// Release the model object.
+            //Model?.ShutDown();
+            //Model = null;
 
             D3D?.ShutDown();
             D3D = null;
@@ -96,11 +117,16 @@ namespace DrawingPipelineLibrary.DirectX
             var projectionMatrix = D3D.ProjectionMatrix;
 
             // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-            Model.Render(D3D.DeviceContext);
+            foreach(DModel model in ModelList)
+            {
+                model.Render(D3D.DeviceContext);
 
-            // Render the model using the color shader.
-            if (!ColorShader.Render(D3D.DeviceContext, Model.IndexCount, worldMatrix, viewMatrix, projectionMatrix))
-                return false;
+                // Render the model using the color shader.
+                if (!ColorShader.Render(D3D.DeviceContext, model.IndexCount, worldMatrix, viewMatrix, projectionMatrix))
+                    return false;
+            }
+
+
 
             // Present the rendered scene to the screen.
             D3D.EndScene();
