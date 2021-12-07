@@ -7,9 +7,9 @@ namespace DrawingPipelineLibrary.DirectX
     public class DModel                 // 112 lines
     {
         // Properties
-        private SharpDX.Direct3D11.Buffer VertexBuffer { get; set; }
-        private SharpDX.Direct3D11.Buffer IndexBuffer { get; set; }
-        private int VertexCount { get; set; }
+        public SharpDX.Direct3D11.Buffer VertexBuffer { get; set; }
+        public SharpDX.Direct3D11.Buffer IndexBuffer { get; set; }
+        public int VertexCount { get; set; }
         public int IndexCount { get; set; }
 
         // Constructor

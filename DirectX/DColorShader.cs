@@ -16,7 +16,7 @@ namespace DrawingPipelineLibrary.DirectX
     {
         // Structures.
         [StructLayout(LayoutKind.Sequential)]
-        internal struct DVertex
+        public struct DVertex
         {
             public static int AppendAlignedElement = 12;
             public Vector3 position;
