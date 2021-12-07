@@ -1,9 +1,15 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using System;
 
 namespace DrawingPipelineLibrary.DirectX
 {
+    public enum ModelElementTypes
+    {
+        MODEL_ELEMENT_TRIANGLE,
+        MODEL_ELEMENT_LINE
+    }
     public class DModel                 // 112 lines
     {
         // Properties
@@ -12,15 +18,12 @@ namespace DrawingPipelineLibrary.DirectX
         public int VertexCount { get; set; }
         public int IndexCount { get; set; }
 
+        public ModelElementTypes ModelElementType { get; set; }
+
         // Constructor
         public DModel() { }
 
         // Methods.
-        public bool Initialize(Device device)
-        {
-            // Initialize the vertex and index buffer that hold the geometry for the triangle.
-            return InitializeBuffer(device);
-        }
         public void ShutDown()
         {
             // Release the vertex and index buffers.
@@ -32,7 +35,7 @@ namespace DrawingPipelineLibrary.DirectX
             RenderBuffers(deviceContext);
         }
 
-        public bool InitializeBuffer(Device device)
+        public bool InitializeBuffer(Device device, ModelElementTypes element_type)
         {
             try
             {
@@ -87,6 +90,8 @@ namespace DrawingPipelineLibrary.DirectX
                 // Create the index buffer.
                 IndexBuffer = SharpDX.Direct3D11.Buffer.Create(device, BindFlags.IndexBuffer, indicies, IndexCount * sizeof(int));
 
+                ModelElementType = element_type;
+
                 // Delete arrays now that they are in their respective vertex and index buffers.
                 vertices = null;
                 indicies = null;
@@ -99,7 +104,7 @@ namespace DrawingPipelineLibrary.DirectX
             }
         }
 
-        public bool InitializeBufferTestTriangle(Device device)
+        public bool InitializeBufferTestTriangle(Device device, ModelElementTypes element_type)
         {
             try
             {
@@ -145,6 +150,8 @@ namespace DrawingPipelineLibrary.DirectX
                 // Create the index buffer.
                 IndexBuffer = SharpDX.Direct3D11.Buffer.Create(device, BindFlags.IndexBuffer, indicies);
 
+                ModelElementType = element_type;
+
                 // Delete arrays now that they are in their respective vertex and index buffers.
                 vertices = null;
                 indicies = null;
@@ -174,7 +181,17 @@ namespace DrawingPipelineLibrary.DirectX
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, SharpDX.DXGI.Format.R32_UInt, 0);
 
             // Set the type of the primitive that should be rendered from this vertex buffer, in this case triangles.
-            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            switch (ModelElementType)
+            {
+                case ModelElementTypes.MODEL_ELEMENT_TRIANGLE:
+                    deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+                    break;
+                case ModelElementTypes.MODEL_ELEMENT_LINE:
+                    deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

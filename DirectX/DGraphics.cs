@@ -6,12 +6,30 @@ namespace DrawingPipelineLibrary.DirectX
 {
     public class DGraphics                      // 23 lines              // 23 lines
     {
+        private List<DModel> lstModelList = new List<DModel>();
         // Properties
         public DDX11 D3D { get; set; }
         public DCamera Camera { get; set; }
         public DModel Model { get; set; }
 
-        public List<DModel> ModelList {get; set;}
+        public List<DModel> ModelList {
+            get {
+                lock(this)
+                {
+                    return lstModelList;
+                }
+            }
+            set 
+            {
+                if (value != null)
+                {
+                    lock(this)
+                    {
+                        lstModelList = value;
+                    }
+                }
+            }
+        }
         public void AddModel(DModel model)
         {
             if (model != null)
@@ -117,8 +135,16 @@ namespace DrawingPipelineLibrary.DirectX
             var projectionMatrix = D3D.ProjectionMatrix;
 
             // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-            foreach(DModel model in ModelList)
+            for (int i = 0; i < ModelList.Count; i++)
             {
+                var model = ModelList[i];
+
+                if (model == null)
+                    break;
+
+                // TODO:: Fix the race condition that occurs here for somereason.
+                // if the modelist has changed or an element has broken.
+
                 model.Render(D3D.DeviceContext);
 
                 // Render the model using the color shader.

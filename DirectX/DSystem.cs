@@ -107,7 +107,7 @@ namespace DrawingPipelineLibrary.DirectX
 
         private void ProcessKeyStrokes()
         {
-            float offset = 0.5f;
+            float offset = 20f;
             DCamera c = Graphics.Camera;
 
             float newX = c.GetX;
@@ -138,6 +138,15 @@ namespace DrawingPipelineLibrary.DirectX
                 //MessageBox.Show("X pressed");
                 newZ += offset;
             }
+
+            if (Input.IsKeyDown(Keys.Space))
+            {
+                Input.KeyUp(Keys.Space); // turn off the toggle
+                //MessageBox.Show("X pressed");
+                newY += offset;
+            }
+
+
             if (Input.IsKeyDown(Keys.R))
             {
                 Input.KeyUp(Keys.R); // turn off the toggle
@@ -145,7 +154,6 @@ namespace DrawingPipelineLibrary.DirectX
                 newY = c.GetY;
                 newZ = c.GetZ;
             }
-
 
             // Set the camera changes
             Graphics.Camera.SetPosition(newX, newY, newZ);

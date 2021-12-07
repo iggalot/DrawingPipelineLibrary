@@ -133,33 +133,15 @@ namespace DrawingPipeline.DirectX
             // Initializes 
             GetDSystem = new DSystem();
             GetDSystem.Initialize("DirectX Window", 1200, 900, true, false, 0);
-            //GetDSystem.StartRenderForm("DirectX Window",1200,900, true, false);
 
-            // Create our default model
-            GetDSystem.Graphics.Model = new DModel();
-
-            // Initialize the vertex buffers
-         //   GetDSystem.Graphics.Model.Initialize(GetDSystem.Graphics.D3D.Device);
-
-            //// Old Pipeline system stuff
-            //renderForm = new RenderForm("My first SharpDX game");
-            //renderForm.ClientSize = new Size((int)Width, (int)Height);
-            //renderForm.AllowUserResizing = false;
-
-            //InitializeDeviceResources();
-            //InitializeShaders();
-
-            //InitializeTriangles();
+// Create our default model
+//            GetDSystem.Graphics.Model = new DModel();
         }
 
         public override void RunPipeline()
         {
             // Run the render loop...
             GetDSystem.RunRenderForm();
-        }
-        private void LoadModel()
-        {
-            //throw new NotImplementedException();
         }
 
         public override int Render(List<TriangleObject> TriangleList, List<LineObject> LineList, RENDERFLAGS flags)
