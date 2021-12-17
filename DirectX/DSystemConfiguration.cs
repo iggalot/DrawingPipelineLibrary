@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace DrawingPipelineLibrary.DirectX
@@ -6,8 +7,10 @@ namespace DrawingPipelineLibrary.DirectX
     public class DSystemConfiguration                   // 41 lines
     {
         public string Title { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+
+        // Dimension of the DirectX Window
+        public int Width { get; set; } = 500;
+        public int Height { get; set; } = 500;
 
         // Static Properties
         public static bool FullScreen { get; private set; }

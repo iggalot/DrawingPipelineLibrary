@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDrawingPipeline.cs" />
+    <Compile Include="DirectXDrawingFunctions.cs" />
     <Compile Include="DirectX\DCamera.cs" />
     <Compile Include="DirectX\DColorShader.cs" />
     <Compile Include="DirectX\DDX11.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="DirectX\DSystem.cs" />
     <Compile Include="DirectX\DSystemConfiguration.cs" />
     <Compile Include="DirectX\DTimer.cs" />
+    <Compile Include="acDrawingFunction.cs" />
+    <Compile Include="WPFCanvasDrawingFunctions.cs" />
     <Compile Include="WPFCanvas\CanvasDrawingPipeline.cs" />
     <Compile Include="DirectX\DirectXDrawingPipeline.cs" />
     <Compile Include="MathVectors.cs" />

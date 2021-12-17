@@ -101,6 +101,7 @@ namespace DrawingPipelineLibrary.DirectX
             ColorShader?.ShutDown();
             ColorShader = null;
 
+            //// Release the model objects.
             for (int i = 0; i < ModelList.Count; i++)
             {
                 // Release the model object.
@@ -118,6 +119,9 @@ namespace DrawingPipelineLibrary.DirectX
         }
         public bool Frame()
         {
+            // Update the scene here
+            //TODO: Update the scene here.
+
             // Render the graphics scene.
             return Render();
         }
