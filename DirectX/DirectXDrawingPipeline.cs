@@ -6,8 +6,8 @@ namespace DrawingPipeline.DirectX
 {
     public class DirectXDrawingPipeline : BaseDrawingPipeline
     {
-        // The DirectX System parameter
-        public DSystem GetDSystem { get; set; }
+
+
         public override void SetKeyState(Key key, bool val)
         {
             // convert the Application's WPF keystrokes to DirectX key input
@@ -17,7 +17,7 @@ namespace DrawingPipeline.DirectX
             base.SetKeyState(key, val);
         }
         
-        public DirectXDrawingPipeline(int width, int height) : base(width, height)
+        public DirectXDrawingPipeline(int width, int height, int timer) : base(width, height, timer)
         {
             // Loads our drawing functions for the DirectX format drawing
             DrawFunc = new DirectXDrawingFunctions();
@@ -30,7 +30,7 @@ namespace DrawingPipeline.DirectX
         /// <summary>
         /// Starts the running of the pipeline.
         /// </summary>
-        public override void RunPipeline()
+        public override void Run()
         {
             // Start running the direct X render loop...
             GetDSystem.RunRenderForm();

@@ -1,4 +1,5 @@
 ﻿using DrawingPipelineLibrary;
+using DrawingPipelineLibrary.DirectX;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -29,23 +30,32 @@ namespace DrawingPipeline
 
     public class BaseDrawingPipeline : IDisposable
     {
-        public acDrawingFunction DrawFunc;
-        public int DisplayWidth { get; set; }
-        public int DisplayHeight { get; set; }
+        private int m_RefreshTimer;
 
-        public BaseDrawingPipeline(int display_width, int display_height)
+        public acDrawingFunction DrawFunc;
+
+        // The DirectX System parameter
+        public DSystem GetDSystem { get; set; }
+        public int RefreshTimer { get; set; }
+
+        private int DisplayWidth { get; set; }
+        private int DisplayHeight { get; set; }
+
+        public BaseDrawingPipeline(int display_width, int display_height, int timer)
         {
             DisplayWidth = display_width;
             DisplayHeight = display_height;
+
+            RefreshTimer = timer;
         }
 
-        public virtual void RunPipeline() { }
+        public virtual void Run() { }
 
         public virtual void Dispose() { }
 
         public virtual void SetKeyState(Key key, bool val) { }
 
-        public virtual int Update(List<TriangleObject> TriangleList, List<LineObject> LineList, RENDERFLAGS flags) 
+        public virtual int Update() 
         { 
             throw new NotImplementedException("in BaseDrawingPipeline:  Update not implemented for base clase");
         }
