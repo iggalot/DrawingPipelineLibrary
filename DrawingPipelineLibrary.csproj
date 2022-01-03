@@ -80,10 +80,10 @@
     <Compile Include="DirectX\DSystemConfiguration.cs" />
     <Compile Include="DirectX\DTimer.cs" />
     <Compile Include="acDrawingFunction.cs" />
+    <Compile Include="DXMathFunctions.cs" />
     <Compile Include="WPFCanvasDrawingFunctions.cs" />
     <Compile Include="WPFCanvas\CanvasDrawingPipeline.cs" />
     <Compile Include="DirectX\DirectXDrawingPipeline.cs" />
-    <Compile Include="MathVectors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexPositionColor.cs" />
   </ItemGroup>

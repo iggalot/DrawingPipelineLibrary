@@ -1,4 +1,7 @@
-﻿namespace DrawingPipelineLibrary
+﻿using DrawingHelpersLibrary;
+using System.Windows.Media;
+
+namespace DrawingPipelineLibrary
 {
     /// <summary>
     /// Abstract class to handle drawing of objects to different formats
@@ -7,7 +10,7 @@
     public abstract class acDrawingFunction
     {
         // function for drawing a solid line
-        public abstract void DrawLineSolid();
+        public abstract void DrawLineSolid(float sx, float sy, float ex, float ey, Brush color, double thick, Linetypes line_type);
 
         // function for drawing a filled triangle
         public abstract void DrawTriangleFilled();

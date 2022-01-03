@@ -10,9 +10,6 @@ namespace DrawingPipeline.DirectX
 
         public override void SetKeyState(Key key, bool val)
         {
-            // convert the Application's WPF keystrokes to DirectX key input
-            GetDSystem.Input.SetKeyState(key, val);
-
             // handle any generic pipeline keystroke requirements.
             base.SetKeyState(key, val);
         }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DrawingHelpersLibrary;
+using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DrawingPipelineLibrary
 {
@@ -96,9 +98,10 @@ namespace DrawingPipelineLibrary
         //    DrawingHelpers.DrawTriangle(m_CanvasContext, x1, y1, x2, y2, x3, y3, stroke);
         //}
 
-        public override void DrawLineSolid()
+        public override void DrawLineSolid(float sx, float sy, float ex, float ey, Brush color, double thick, Linetypes line_type)
         {
-            throw new NotImplementedException();
+
+            DrawingHelpers.DrawLine(m_Canvas, sx, sy, ex, ey, color, thick, line_type);
         }
 
         public override void DrawTriangleFilled()

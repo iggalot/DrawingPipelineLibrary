@@ -125,6 +125,7 @@ namespace DrawingPipelineLibrary.DirectX
             // Render the graphics scene.
             return Render();
         }
+
         public bool Render()
         {
             // Clear the buffer to begin the scene.

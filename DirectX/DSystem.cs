@@ -145,7 +145,7 @@ namespace DrawingPipelineLibrary.DirectX
 
             if (Input.IsKeyDown(Keys.Space))
             {
-                Input.KeyUp(Keys.Space); // turn off the toggle
+                 Input.KeyUp(Keys.Space); // turn off the toggle
                 //MessageBox.Show("X pressed");
                 newY += offset;
             }

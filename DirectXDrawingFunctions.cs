@@ -1,12 +1,14 @@
-﻿using DrawingPipelineLibrary.DirectX;
+﻿using DrawingHelpersLibrary;
+using DrawingPipelineLibrary.DirectX;
 using SharpDX;
 using System;
+using System.Windows.Media;
 
 namespace DrawingPipelineLibrary
 {
     public class DirectXDrawingFunctions : acDrawingFunction
     {
-        public override void DrawLineSolid()
+        public override void DrawLineSolid(float sx, float sy, float ex, float ey, Brush color, double thick, Linetypes line_type)
         {
             throw new NotImplementedException();
         }

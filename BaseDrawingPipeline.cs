@@ -3,7 +3,6 @@ using DrawingPipelineLibrary.DirectX;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using static MathLibrary.MathVectors;
 
 namespace DrawingPipeline
 {
@@ -49,20 +48,30 @@ namespace DrawingPipeline
             RefreshTimer = timer;
         }
 
+        /// <summary>
+        /// Runs the pipeline.
+        /// </summary>
         public virtual void Run() { }
 
+        /// <summary>
+        /// Disposes the pipline.
+        /// </summary>
         public virtual void Dispose() { }
 
-        public virtual void SetKeyState(Key key, bool val) { }
+        public virtual void SetKeyState(Key key, bool val)
+        {         
+            // convert the Application's WPF keystrokes to DirectX key input
+            GetDSystem.Input.SetKeyState(key, val);
+        }
 
         public virtual int Update() 
         { 
             throw new NotImplementedException("in BaseDrawingPipeline:  Update not implemented for base clase");
         }
 
-        public virtual int Render(List<TriangleObject> TriangleList, List<LineObject> LineList, RENDERFLAGS flags)
-        {
-            throw new NotImplementedException("in BaseDrawingPipeline:  Render not implemented for base clase");
-        }
+        //public virtual int Render(List<TriangleObject> TriangleList, List<LineObject> LineList, RENDERFLAGS flags)
+        //{
+        //    throw new NotImplementedException("in BaseDrawingPipeline:  Render not implemented for base clase");
+        //}
     }
 }

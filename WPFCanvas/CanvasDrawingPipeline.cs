@@ -1,14 +1,9 @@
 ﻿using DrawingHelpersLibrary;
 using DrawingPipelineLibrary;
 using DrawingPipelineLibrary.DirectX;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using static MathLibrary.MathVectors;
 
 namespace DrawingPipeline
 {
@@ -34,17 +29,22 @@ namespace DrawingPipeline
         {
             Update();
         }
+
+        /// <summary>
+        /// Update function for drawing to a WPF Canvas object
+        /// </summary>
+        /// <returns></returns>
         public override int Update()
         {
-            var ex = GetDSystem.Configuration.Width;
-            var ey = GetDSystem.Configuration.Height;
+            int ex = GetDSystem.Configuration.Width;
+            int ey = GetDSystem.Configuration.Height;
 
             // Clear the screen
             m_CanvasContext.Children.Clear();
 
 
-                // Draw to the canvas
-                DrawingHelpers.DrawLine(m_CanvasContext, 0, 0, ex, ey, Brushes.Red, 10, Linetypes.LINETYPE_PHANTOM_X2);
+            //// DRAW STUFF
+            DrawFunc.DrawLineSolid(0, 0, (float)ex, (float)ey, Brushes.Red, 10, Linetypes.LINETYPE_PHANTOM_X2);
 
          //   // Call the base render function
             return 1;
@@ -53,6 +53,17 @@ namespace DrawingPipeline
         public override void Dispose()
         {
             base.Dispose();
+        }
+
+        /// <summary>
+        /// To handle key states
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="val"></param>
+        public override void SetKeyState(Key key, bool val)
+        {
+            // handle any generic pipeline keystroke requirements.
+            base.SetKeyState(key, val);
         }
     }
 }
