@@ -56,7 +56,8 @@ namespace DrawingPipelineLibrary.DirectX
                     return false;
 
                 // Create the camera object and set its initial position
-                Camera = new DCamera(0, 0, -10);
+                Camera = new DCamera(0, 0, -500);
+                Camera.SetPosition(-800, 200, -800);
 
                 // Create the list of models
                 ModelList = new List<DModel>();
@@ -132,7 +133,8 @@ namespace DrawingPipelineLibrary.DirectX
             D3D.BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
 
             // Generate the view matrix based on the camera position.
-            Camera.Render();
+            //if (Camera.HasMoved)
+            Camera.UpdateViewMatrix();
 
             // Get the world, view, and projection matrices from camera and d3d objects.
             var viewMatrix = Camera.ViewMatrix;

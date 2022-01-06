@@ -28,12 +28,32 @@ namespace DrawingPipelineLibrary
             return temp;
         }
 
+        public static SharpDX.Vector3 Vec_Normalize(SharpDX.Vector3 v)
+        {
+            SharpDX.Vector3 temp = new SharpDX.Vector3(0.0f, 0.0f, 0.0f);
+            float l = Vec_Length(v);
+            temp.X = v.X / l;
+            temp.Y = v.Y / l;
+            temp.Z = v.Z / l;
+            return temp;
+        }
+
         public static float Vec_Length(SharpDX.Vector4 v)
+        {
+            return (float)Math.Sqrt(Vec_DotProduct(v, v));
+        }
+        
+        public static float Vec_Length(SharpDX.Vector3 v)
         {
             return (float)Math.Sqrt(Vec_DotProduct(v, v));
         }
 
         public static float Vec_DotProduct(SharpDX.Vector4 v1, SharpDX.Vector4 v2)
+        {
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+        }
+
+        public static float Vec_DotProduct(SharpDX.Vector3 v1, SharpDX.Vector3 v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }

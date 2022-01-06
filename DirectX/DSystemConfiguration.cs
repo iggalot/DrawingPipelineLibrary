@@ -45,8 +45,8 @@ namespace DrawingPipelineLibrary.DirectX
         static DSystemConfiguration()
         {
             VerticalSyncEnabled = false;
-            ScreenDepth = 1000.0f;
-            ScreenNear = 0.1f;
+            ScreenDepth = 10000.0f;  // far plane location
+            ScreenNear = 0.1f;       // near plane location  
             BorderStyle = FormBorderStyle.None;
 
             // TODO: Find a better way to locate shader files in the directory structure.
