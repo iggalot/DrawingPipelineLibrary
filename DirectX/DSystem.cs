@@ -22,6 +22,9 @@ namespace DrawingPipelineLibrary.DirectX
         // Flag for the first time the mouse is moved.
         private bool bFirstMouse { get; set; } = true;
 
+        // Flag to determine if the UI needs an update
+        public bool bNeedsUpdate { get; set; } = true;
+
         // Constructor
         public DSystem() { }
 
@@ -158,7 +161,7 @@ namespace DrawingPipelineLibrary.DirectX
             SharpDX.Vector3 direction = new SharpDX.Vector3();
             direction.X = (float)(Math.Cos(camera.Yaw * 3.14159 / 180.0f) * Math.Cos(camera.Pitch * 3.14159 / 180.0f));
             direction.Y = (float)(Math.Sin(camera.Pitch * 3.14159 / 180.0f));
-            direction.Z = (float)(Math.Sin(camera.Yaw * 3.14159 / 180.0f) * Math.Sin(camera.Pitch * 3.14159 / 180.0f));
+            direction.Z = (float)(Math.Sin(camera.Yaw * 3.14159 / 180.0f) * Math.Cos(camera.Pitch * 3.14159 / 180.0f));
             camera.LookAt = DXMathFunctions.Vec_Normalize(direction);
             camera.UpdateViewMatrix();
 
@@ -192,7 +195,6 @@ namespace DrawingPipelineLibrary.DirectX
 
         private void ProcessKeyStrokes()
         {
-            float offset = 20f;
             DCamera c = Graphics.Camera;
 
             float newX = c.GetX;
@@ -201,54 +203,58 @@ namespace DrawingPipelineLibrary.DirectX
 
             if (Input.IsKeyDown(Keys.C))
             {
-                var camera = Graphics.Camera;
                 Input.KeyUp(Keys.C); // toggle the camera
 
-                camera.IsActiveMode = !(camera.IsActiveMode);
-                MessageBox.Show("Camera is " + (Graphics.Camera.IsActiveMode ? "" : " NOT ") + " active now!");
+                c.IsActiveMode = !(c.IsActiveMode);
+                MessageBox.Show("Camera is " + (c.IsActiveMode ? "" : " NOT ") + " active now!");
             }
 
+            SharpDX.Vector3 newPos = new SharpDX.Vector3(newX, newY, newZ);
+
             // Camera related functionality
-            if (Graphics.Camera.IsActiveMode)
-            {
+            if (c.IsActiveMode)
+            {   
+                SharpDX.Vector3 move = new SharpDX.Vector3(0,0,0);
                 if (Input.IsKeyDown(Keys.A))
                 {
                     Input.KeyUp(Keys.A); // turn off the toggle
-                    newX -= offset;
+                    move =c.MoveRight(false);
+
+                    c.SetPosition(move.X, move.Y, move.Z);
                 }
                 if (Input.IsKeyDown(Keys.D))
                 {
                     Input.KeyUp(Keys.D); // turn off the toggle
-                    newX += offset;
+                    move = c.MoveRight(true);
+
+                    c.SetPosition(move.X, move.Y, move.Z);
                 }
                 if (Input.IsKeyDown(Keys.W))
                 {
                     Input.KeyUp(Keys.W); // turn off the toggle
-                    newZ -= offset;
+                    move = c.MoveForward(true);
+
+                    c.SetPosition(move.X, move.Y, move.Z);
                 }
                 if (Input.IsKeyDown(Keys.X))
                 {
                     Input.KeyUp(Keys.X); // turn off the toggle
-                    newZ += offset;
+                    move = c.MoveForward(false);
+
+                    c.SetPosition(move.X, move.Y, move.Z);
+
                 }
 
-                if (Input.IsKeyDown(Keys.Space))
-                {
-                     Input.KeyUp(Keys.Space); // turn off the toggle
-                    //MessageBox.Show("X pressed");
-                    newY += offset;
-                }
+                //if (Input.IsKeyDown(Keys.Space))
+                //{
+                //    Input.KeyUp(Keys.Space); // turn off the toggle
+                //}
 
-                if (Input.IsKeyDown(Keys.R))
-                {
-                    Input.KeyUp(Keys.R); // turn off the toggle
-                    newX = c.GetX;
-                    newY = c.GetY;
-                    newZ = c.GetZ;
-                }
+                //if (Input.IsKeyDown(Keys.R))
+                //{
+                //    Input.KeyUp(Keys.R); // turn off the toggle
+                //}
 
-                // Set the camera changes
-                Graphics.Camera.SetPosition(newX, newY, newZ);
             }
 
         }

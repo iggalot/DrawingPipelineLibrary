@@ -7,6 +7,15 @@ namespace DrawingPipelineLibrary
     /// </summary>
     public class DXMathFunctions
     {
+        public static SharpDX.Vector3 Vec_CrossProduct(SharpDX.Vector3 v1, SharpDX.Vector3 v2)
+        {
+            SharpDX.Vector3 v = new SharpDX.Vector3(0.0f, 0.0f, 0.0f);
+            v.X = v1.Y * v2.Z - v1.Z * v2.Y;
+            v.Y = v1.Z * v2.X - v1.X * v2.Z;
+            v.Z = v1.X * v2.Y - v1.Y * v2.X;
+            return v;
+        }
+
         public static SharpDX.Vector4 Vec_CrossProduct(SharpDX.Vector4 v1, SharpDX.Vector4 v2)
         {
             SharpDX.Vector4 v = new SharpDX.Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -68,6 +77,16 @@ namespace DrawingPipelineLibrary
             return temp;
         }
 
+        public static SharpDX.Vector3 Vec_Add(SharpDX.Vector3 v1, SharpDX.Vector3 v2)
+        {
+            SharpDX.Vector3 temp = new SharpDX.Vector3(0.0f, 0.0f, 0.0f);
+            temp.X = v1.X + v2.X;
+            temp.Y = v1.Y + v2.Y;
+            temp.Z = v1.Z + v2.Z;
+            return temp;
+        }
+
+
         public static SharpDX.Vector4 Vec_Sub(SharpDX.Vector4 v1, SharpDX.Vector4 v2)
         {
             SharpDX.Vector4 temp = new SharpDX.Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -75,6 +94,51 @@ namespace DrawingPipelineLibrary
             temp.Y = v1.Y - v2.Y;
             temp.Z = v1.Z - v2.Z;
             temp.W = 0.0f;
+            return temp;
+        }
+
+        public static SharpDX.Vector4 Vec_Mul(SharpDX.Vector4 v1, float k)
+        {
+            SharpDX.Vector4 temp = new SharpDX.Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+            temp.X = v1.X * k;
+            temp.Y = v1.Y * k;
+            temp.Z = v1.Z * k;
+            temp.W = v1.W * k;
+            return temp;
+        }
+
+        public static SharpDX.Vector3 Vec_Mul(SharpDX.Vector3 v1, float k)
+        {
+            SharpDX.Vector3 temp = new SharpDX.Vector3(0.0f, 0.0f, 0.0f);
+            temp.X = v1.X * k;
+            temp.Y = v1.Y * k;
+            temp.Z = v1.Z * k;
+            return temp;
+        }
+
+        public static SharpDX.Vector3 Vec_Div(SharpDX.Vector3 v1, float k)
+        {
+            if (k == 0)
+                throw new InvalidOperationException("Division by 0 detected");
+
+            SharpDX.Vector3 temp = new SharpDX.Vector3(0.0f, 0.0f, 0.0f);
+            temp.X = v1.X / k;
+            temp.Y = v1.Y / k;
+            temp.Z = v1.Z / k;
+            return temp;
+        }
+
+        public static SharpDX.Vector4 Vec_Div(SharpDX.Vector4 v1, float k)
+        {
+            if (k == 0)
+                throw new InvalidOperationException("Division by 0 detected");
+
+            SharpDX.Vector4 temp = new SharpDX.Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+            temp.X = v1.X / k;
+            temp.Y = v1.Y / k;
+            temp.Z = v1.Z / k;
+            temp.W = v1.W / k;
+
             return temp;
         }
     }

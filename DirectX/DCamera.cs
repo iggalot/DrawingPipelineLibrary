@@ -5,6 +5,8 @@ namespace DrawingPipelineLibrary.DirectX
 {
     public class DCamera                    // 53 lines
     {
+        private const float CameraMoveSensitivity = 20;
+
         // Properties.
         // Original position data
         private float OriginalPosX { get; set; }
@@ -31,15 +33,27 @@ namespace DrawingPipelineLibrary.DirectX
         public float GetRotZ => CurrentRotZ;
 
         // Default direction that the camera is facing.
-        public Vector3 LookAt { get; set; } = new Vector3(1, 0, 1);
+        public Vector3 LookAt { get; set; } = DXMathFunctions.Vec_Normalize(new Vector3(0, 0, 1));
+        public Vector3 Up { get; set; } = new Vector3(0, 1, 0);
 
-        public float Yaw { get; set; } = 0;
+        public float Yaw { get; set; } = -90.0f;
         public float Pitch { get; set; } = 0;
         public float Roll { get; set; } = 0;
         public bool HasMoved { get; set; } = false;
 
         // Is the camera currently active for receiving input?
         public bool IsActiveMode { get; set; } = false;
+
+        public string CurrentPositionString
+        {
+            get
+            {
+                string str = "";
+                str += "Current Camera Position: (" + CurrentPosX + " , " + CurrentPosY + " , " + CurrentPosZ + ")";
+                str += "          Looking At: < " + LookAt.X + " ," + LookAt.Y + " , " + LookAt.Z + ">";
+                return str;
+            }
+        }
 
         // Constructors
         public DCamera() { }
@@ -48,6 +62,10 @@ namespace DrawingPipelineLibrary.DirectX
             OriginalPosX = x;
             OriginalPosY = y;
             OriginalPosZ = z;
+
+            // Default the camera to looking at the origin <0,0,0>
+            LookAt = DXMathFunctions.Vec_Normalize(new SharpDX.Vector3(0 - x, 0 - y, 0 - z));
+
             SetPosition(x, y, z);
         }
         // Methods.
@@ -100,5 +118,52 @@ namespace DrawingPipelineLibrary.DirectX
             // Finally create the view matrix from the three updated vectors.
             ViewMatrix = Matrix.LookAtLH(position, lookAt, up);
         }
+
+        /// <summary>
+        /// Determines the new position of the camera a specified distance 
+        /// in the direction it is facing.
+        /// '+' distance is forward.
+        /// </summary>
+        /// <param name="dist"></param>
+        public SharpDX.Vector3 MoveForward(bool move_status)
+        {
+            SharpDX.Vector3 curr = new SharpDX.Vector3(this.GetX, this.GetY, this.GetZ);
+            float factor = 1.0f;
+
+            // If we are moving backwards, the multiplier is negative.
+            if (!move_status)
+                factor = -1.0f;
+            
+            SharpDX.Vector3 move = DXMathFunctions.Vec_Mul(LookAt, factor * CameraMoveSensitivity);
+
+            curr = DXMathFunctions.Vec_Add(curr, move);
+
+            return curr;
+        }
+
+        /// <summary>
+        /// Determines the new position of  the camera a specified distance to the right 
+        /// (perpendicular) to the direction it is facing.
+        /// '+' distance is to the right
+        /// </summary>
+        /// <param name="dist"></param>
+        public SharpDX.Vector3 MoveRight(bool move_status)
+        {
+            SharpDX.Vector3 curr = new SharpDX.Vector3(this.GetX, this.GetY, this.GetZ);
+            SharpDX.Vector3 moveVec = DXMathFunctions.Vec_CrossProduct(LookAt, Up);
+
+            float factor = 1.0f;
+
+            // If we are moving left, the multiplier is negative.
+            if (!move_status)
+                factor = -1.0f;
+
+            SharpDX.Vector3 move = DXMathFunctions.Vec_Mul(moveVec, factor * CameraMoveSensitivity);
+            curr = DXMathFunctions.Vec_Add(curr, move);
+
+            return curr;
+        }
     }
+
+
 }
