@@ -22,24 +22,18 @@ namespace DrawingPipelineLibrary.DirectX
 
         public ModelElementTypes ModelElementType { get; set; }
 
+        public bool bIsTextured { get; private set; }
+
         // Constructor
-        public DModel() { }
+        public DModel() {}
 
         public bool Initialize(SharpDX.Direct3D11.Device device, ModelElementTypes element_type, bool use_texture, string textureFileName)
         {
-            // Initialize the vertex and index buffer that hold the geometry for the triangle.
+            bIsTextured = use_texture;
+            // TODO: Should this be here?  This should be near the ColorShader right?
+            // Initialize the texture object
             if(use_texture && !(String.IsNullOrEmpty(textureFileName)))
             {
-                if (!InitializeBuffer_Texture(device, element_type, textureFileName))
-                    return false;
-
-                if (!LoadTexture(device, textureFileName))
-                    return false;
-            } else
-            {
-                if (!InitializeBuffer_NoTexture(device, element_type))
-                    return false;
-
                 if (!LoadTexture(device, textureFileName))
                     return false;
             }
@@ -49,7 +43,13 @@ namespace DrawingPipelineLibrary.DirectX
 
         private bool LoadTexture(Device device, string textureFileName)
         {
-            throw new NotImplementedException();
+            // Create the texture object.
+            Texture = new DTexture();
+
+            // Initialize the texture object.
+            bool result = Texture.Initialize(device, textureFileName);
+
+            return result;
         }
 
         // Methods.

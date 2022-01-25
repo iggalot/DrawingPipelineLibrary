@@ -19,6 +19,7 @@ namespace DrawingPipelineLibrary.DirectX
         public static float ScreenNear { get; private set; }
         public static FormBorderStyle BorderStyle { get; set; }
         public static string ShaderFilePath { get; private set; }
+        public static string DataFilePath { get; private set; }
 
         // Constructors
         public DSystemConfiguration(bool fullScreen, bool vSync) : this("SharpDX Demo", fullScreen, vSync) { }
@@ -52,9 +53,11 @@ namespace DrawingPipelineLibrary.DirectX
             // TODO: Find a better way to locate shader files in the directory structure.
             // For the MathLibraryDriverProject, it needs another "..\..\.." instead of two "..\..Watch this path...
             ShaderFilePath = @"../../../DirectX/Shaders/";
+            DataFilePath = @"../../../DirectX/Shaders/";
 
             // For the WindProvisionsDriverProject
             ShaderFilePath = @"./DirectX/Shaders/";
+            DataFilePath = @"./DirectX/Shaders/";
 
         }
     }

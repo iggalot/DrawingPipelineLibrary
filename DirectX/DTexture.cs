@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace DrawingPipeline.DirectX
+namespace DrawingPipelineLibrary.DirectX
 {
     public class DTexture                   // 31 lines
     {

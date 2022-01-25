@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -11,7 +12,6 @@ namespace DrawingPipelineLibrary.DirectX
         public DDX11 D3D { get; set; }
         public DCamera Camera { get; set; }
         public DModel Model { get; set; }
-
         public List<DModel> ModelList {
             get {
                 lock(this)
@@ -39,6 +39,7 @@ namespace DrawingPipelineLibrary.DirectX
         }
 
         public DColorShader ColorShader { get; set; }
+        private DTextureShader TextureShader { get; set; }
         public DTimer Timer { get; set; }
 
         // Constructor
@@ -68,12 +69,25 @@ namespace DrawingPipelineLibrary.DirectX
                 //if (!Model.Initialize(D3D.Device))
                 //    return false;
 
-                // Create the color shader object.
+                // Create the color shader (non texture) object.
                 ColorShader = new DColorShader();
 
                 // Initialize the color shader object.
                 if (!ColorShader.Initialize(D3D.Device, windowHandle))
+                {
+                    MessageBox.Show("Could not initialize the color shader object");
                     return false;
+                }
+
+                // Create the texture shader object
+                TextureShader = new DTextureShader();
+
+                // Initialize the color shader object.
+                if (!TextureShader.Initialize(D3D.Device, windowHandle))
+                {
+                    MessageBox.Show("Could not initialize the texture shader object");
+                    return false;
+                }
 
                 // Create the Timer
                 Timer = new DTimer();
@@ -101,6 +115,10 @@ namespace DrawingPipelineLibrary.DirectX
             // Release the color shader object.
             ColorShader?.ShutDown();
             ColorShader = null;
+
+            // Release the texture shader object.
+            TextureShader?.ShutDown();
+            TextureShader = null;
 
             //// Release the model objects.
             for (int i = 0; i < ModelList.Count; i++)
@@ -157,9 +175,14 @@ namespace DrawingPipelineLibrary.DirectX
                 // Render the model using the color shader.
                 if (!ColorShader.Render(D3D.DeviceContext, model.IndexCount, worldMatrix, viewMatrix, projectionMatrix))
                     return false;
+
+                // Render the model using the texture shader.
+                if(model.bIsTextured)
+                {
+                    if (!TextureShader.Render(D3D.DeviceContext, model.IndexCount, worldMatrix, viewMatrix, projectionMatrix, model.Texture.TextureResource))
+                        return false;
+                }
             }
-
-
 
             // Present the rendered scene to the screen.
             D3D.EndScene();
