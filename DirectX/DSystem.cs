@@ -83,7 +83,7 @@ namespace DrawingPipelineLibrary.DirectX
 
             // Set the DirectX window location to the right of the UI window with upper left at Y = 0;
             // TODO:: Fix this location line to determine its position based on the windows position.
-            RenderForm.Location = new Point((int)(Configuration.Width*2), 0);
+            RenderForm.Location = new Point((int)(Configuration.Width/2), 0);
 
 //            RenderForm.Location = new Point((width / 2) - (Configuration.Width / 2), (height / 2) - (Configuration.Height / 2));
         }
